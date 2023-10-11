@@ -2,12 +2,14 @@
   "name": "servidor",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "source": "server.js",
+  "main": "dist/server.js",
   "scripts": {
     "mongo": "no docker-compose up -d",
     "watch": "nodemon server.js",
     "dev": "nodemon server.js",
-    "start":"node server.js"
+    "build":"parcel build",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +24,7 @@
     "mongoose": "^7.1.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "parcel": "^2.9.3"
   }
 }
