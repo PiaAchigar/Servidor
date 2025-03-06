@@ -8,6 +8,8 @@ const createUser = async (user) => {
     name: user.name,
     email: user.email,
     password: hashedPassword,
+    role: user.role || 0,
+    active:true
   });
   return await newUser.save();
 };

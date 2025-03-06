@@ -1,14 +1,15 @@
 const productModel = require("../models/productModel");
 
-const createProduct = async (product) => {
+const createProduct = async (product,user) => {
   const newProduct = new productModel({
     code: product.code,
     category: product.category,
     name: product.name,
     description: product.description,
-    expirationDate: new Date(product.expirationDate),
+    expirationDate: product.expirationDate ? new Date(product.expirationDate) : 0,
     stock: product.stock,
     img: product.img,
+    user:user.id
   });
   return await newProduct.save();
 };
@@ -45,7 +46,7 @@ const getCountItems = async() =>{
   return await productModel.count()
 }
 const updateProduct = async (id, product) => {
-  return await productModel.findByIdAndUpdate(id, product);
+  return await productModel.findByIdAndUpdate(id, product,{new:true});
 };
 
 const deleteProduct = async (id) => {

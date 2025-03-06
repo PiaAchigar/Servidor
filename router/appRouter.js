@@ -2,14 +2,17 @@ const { Router } = require("express");
 const isAuthenticated = require("../middlewares/auth");
 const userRouter = require("./userRouter");
 const productRouter = require("./productRouter");
-const { login } = require("../controllers/userController");
+const { login, logout ,profile} = require("../controllers/userController");
 
 const appRouter = Router();
-appRouter.post("/login", login);
-appRouter.use(isAuthenticated);
-appRouter.use("/user", userRouter); //el delete y el post van por acá
-appRouter.get("/users", userRouter);
-appRouter.use("/products", productRouter);
+appRouter.post("/login", login); // POST- http://localhost:3001/api/login
+appRouter.post("/logout", logout); // POST - http://localhost:3001/api/logout
+// appRouter.post("/login", (req,res)=>{res.send("login")});
+// appRouter.use(isAuthenticated); -> la comenté x mientras porque no me acuerdo como manejarla
+appRouter.get("/profile",isAuthenticated, profile)
+appRouter.use("/user", isAuthenticated, userRouter); //el delete y el post van por acá (register)
+appRouter.get("/users", isAuthenticated, userRouter);
+appRouter.use("/products", isAuthenticated, productRouter);
 //para el login usá passport.js min 15 de "Node.js Passport Login System Tutorial"
 //appRouter.post("/user", userRouter);//acá va el /user/login o en el archivo userRouter??
 //appRouter.delete("/", userRouter); // aun no funciona

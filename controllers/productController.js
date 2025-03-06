@@ -2,7 +2,7 @@ const productService = require("../services/productService");
 
 const createProduct = async (req, res) => {
   try {
-    const product = await productService.createProduct(req.body);
+    const product = await productService.createProduct(req.body, req.user);
     return res.status(201).json(product);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -31,10 +31,9 @@ const getProducts = async (req, res) => {
 const getProductById = async (req, res) => {
   try {
     const product = await productService.getProductById(req.params.id);
-
     return res.status(201).json(product);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(404).json({ message: "Product not found", error: true })
   }
 };
 
@@ -57,30 +56,42 @@ const getProductsByPage = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
+// obtener los productos creados por un usuario en particular
+const getProductsCreatedPerUser = async (req, res) => {
+  try {
+    const productos = await productService.getTotalProductCount(
+      {
+        user:req.body.id // tengo que ver donde la mando el id del user
+      }
+    )
+  } catch (err) {
+    return res.status(404)
+  }
+}
 const updateProduct = async (req, res) => {
   //const { id, product } = req.params;
   const { id } = req.params;
   const product = req.body;
   try {
-    await productService.updateProduct(id, product);
-    return res.status(200).end();
+    const newProduct = await productService.updateProduct(id, product);
+    return res.status(200).json({ message: "Product updated", newProduct }).end();
     // const updatedProduct = await productService.updateProduct(id, product);
     // return res.status(200).json(updatedProduct);
     // await productService.updateProduct(id, product);
     // return res.status(204).end();
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(404).json({ message: "Product not found" });
   }
 };
 
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
+    const product = await productService.getProductById(id);
     await productService.deleteProduct(id);
-    return res.status(204).end();
+    return res.status(204).json({ message: "Product deleted", product }).end();
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(404).json({ message: "Product not found", error: true })
   }
 };
 
@@ -107,6 +118,7 @@ module.exports = {
   getProducts,
   getProductById,
   getProductsByPage,
+  getProductsCreatedPerUser,
   updateProduct,
   deleteProduct,
   deleteMultipleProducts,

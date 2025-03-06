@@ -4,6 +4,7 @@ const {
   getProducts,
   getProductById,
   getProductsByPage,
+  getProductsCreatedPerUser,
   updateProduct,
   deleteProduct,
   deleteMultipleProducts,
@@ -11,12 +12,13 @@ const {
 
 const router = Router();
 
-router.post("/", createProduct); //funciona
+router.post("/", createProduct); //Crear - funciona - POST - http://localhost:3001/api/products
+// router.get("/", (req,res)=>res.send("todos los productos")); //funciona
 router.get("/", getProducts); //funciona
 //router.get("/page/:page", getProductsByPage);
-router.get("/:id?", getProductById); //funciona
-router.put("/:id", updateProduct); //funciona
-router.delete("/:id", deleteProduct); //funciona
+router.get("/:id?", getProductById); //Obtener - funciona
+router.put("/:id", updateProduct); //Actualizar - funciona
+router.delete("/:id", deleteProduct); //Eliminar - funciona
 router.delete("/", deleteMultipleProducts); //eliminar varios productos
 
 module.exports = router;

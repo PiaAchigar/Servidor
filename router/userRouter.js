@@ -10,7 +10,8 @@ const {
 
 const router = Router();
 
-router.post("/register", createUser);
+// router.post("/register", (rec,res)=>{res.send("register")});
+router.post("/register", createUser);// POST- http://localhost:3001/api/user/register
 router.get("/", getUsers);
 router.get("/:id", getUserById);
 //route.put("/:email", upDateUser);
